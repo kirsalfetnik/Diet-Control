@@ -51,7 +51,7 @@ const createRun = async (req, res) => {
     // add a document to database
     try {
         const run = await Run.create({dayName, dayDate, year, runTime, runDist});
-        res,status(200).json(run);
+        res.status(200).json(run);
     } catch (error) {
         res.status(400).json({error: error.message});
     }
@@ -84,7 +84,7 @@ const updateRun = async (req, res) => {
         return res.status(400).json({error: "No such run"});
     }
 
-    const run = await Run.findOneandUpdate({_id: id}, {
+    const run = await Run.findOneAndUpdate({_id: id}, {
         ...req.body
     });
 
