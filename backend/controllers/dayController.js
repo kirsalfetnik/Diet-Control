@@ -9,7 +9,7 @@ const getDays = async (req, res) => {
 }
 
 
-// GET a single DAY
+// GET a single day
 const getDay = async (req, res) => {
     const { id } = req.params;
     

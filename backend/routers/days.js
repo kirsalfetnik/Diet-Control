@@ -5,7 +5,7 @@ const {
     createDay,
     deleteDay,
     updateDay
-} = require('../controllers/dayController.js');
+} = require('../controllers/dayController');
 
 
 const router = express.Router();
