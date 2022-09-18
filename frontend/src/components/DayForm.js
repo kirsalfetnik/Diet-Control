@@ -1,0 +1,90 @@
+import { useState } from 'react';
+
+const DayForm = () => {
+  const [name, setName] = useState('');
+  const [date, setDate] = useState('');
+  const [year, setYear] = useState('');
+  const [comment, setComment] = useState('');
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const day = {name, date, year, comment}
+    
+    const response = await fetch('/days', {
+      method: 'POST',
+      body: JSON.stringify(day),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const json = await response.json();
+
+    if (!response.ok) {
+      setError(json.error);
+    }
+    if (response.ok) {
+      setError(null);
+      setName('');
+      setDate('');
+      setYear('');
+      setComment('');
+      console.log('new day added:', json);
+    }
+
+  }
+
+  return (
+    <form className="create" onSubmit={handleSubmit}> 
+      <h3>Add a New Day</h3>
+
+      <label>Month:</label>
+      <select
+      type="text"
+      onChange={(e) => setName(e.target.value)} 
+      value={name}
+      >
+        <option value="0">Select a month</option>
+        <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+        <option value="April">April</option>
+        <option value="May">May</option>
+        <option value="June">June</option>
+        <option value="July">July</option>
+        <option value="August">August</option>
+        <option value="September">September</option>
+        <option value="October">October</option>
+        <option value="November">November</option>
+        <option value="December">December</option>
+      </select>
+
+      <label>Day of the month:</label>
+      <input 
+        type="number" 
+        onChange={(e) => setDate(e.target.value)} 
+        value={date}
+      />
+
+      <label>Year:</label>
+      <input 
+        type="number" 
+        onChange={(e) => setYear(e.target.value)} 
+        value={year} 
+      />
+
+      <label>Comment:</label>
+      <input 
+        type="text" 
+        onChange={(e) => setComment(e.target.value)} 
+        value={comment} 
+      />
+
+      <button>Add a New Day</button>
+      {error && <div className="error">{error}</div>}
+    </form>
+  )
+}
+
+export default DayForm;
