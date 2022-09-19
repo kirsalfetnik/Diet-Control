@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useDaysContext } from '../hooks/useDaysContext';
 
 const DayForm = () => {
+  const { dispatch } = useDaysContext();
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [year, setYear] = useState('');
@@ -31,6 +33,7 @@ const DayForm = () => {
       setYear('');
       setComment('');
       console.log('new day added:', json);
+      dispatch({type: 'CREATE_DAY', payload: json});
     }
 
   }
