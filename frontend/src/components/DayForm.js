@@ -8,6 +8,7 @@ const DayForm = () => {
   const [year, setYear] = useState('');
   const [comment, setComment] = useState('');
   const [error, setError] = useState(null);
+  const [emptyFields, setEmptyFields] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +26,7 @@ const DayForm = () => {
 
     if (!response.ok) {
       setError(json.error);
+      setEmptyFields(json.emptyFields);
     }
     if (response.ok) {
       setError(null);
@@ -32,6 +34,8 @@ const DayForm = () => {
       setDate('');
       setYear('');
       setComment('');
+      setError(null);
+      setEmptyFields([]);
       console.log('new day added:', json);
       dispatch({type: 'CREATE_DAY', payload: json});
     }
@@ -47,6 +51,7 @@ const DayForm = () => {
       type="text"
       onChange={(e) => setName(e.target.value)} 
       value={name}
+      className={emptyFields.includes('name') ? 'error' : ''}
       >
         <option value="0">Select a month</option>
         <option value="January">January</option>
@@ -68,6 +73,7 @@ const DayForm = () => {
         type="number" 
         onChange={(e) => setDate(e.target.value)} 
         value={date}
+        className={emptyFields.includes('date') ? 'error' : ''}
       />
 
       <label>Year:</label>
@@ -75,6 +81,7 @@ const DayForm = () => {
         type="number" 
         onChange={(e) => setYear(e.target.value)} 
         value={year} 
+        className={emptyFields.includes('year') ? 'error' : ''}
       />
 
       <label>Comment:</label>

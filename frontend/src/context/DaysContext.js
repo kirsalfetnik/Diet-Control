@@ -12,6 +12,10 @@ export const daysReducer = (state, action) => {
             return {
                 days: [action.payload, ...state.days]
             }
+        case 'DELETE_DAY':
+            return {
+                days: state.days.filter((day) => day._id !== action.payload._id)
+            }
         default:
             return state;
     }
