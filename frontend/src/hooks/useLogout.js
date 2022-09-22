@@ -1,7 +1,9 @@
 import { useAuthContext } from "./useAuthContext";
+import { useDaysContext } from "./useDaysContext";
 
 export const useLogout = () => {
     const { dispatch } = useAuthContext();
+    const { dispatch: daysDispatch } = useDaysContext();
 
     const logout = () => {
         // remove user from storage
@@ -9,6 +11,7 @@ export const useLogout = () => {
 
         // dispatch logout action
         dispatch({type: 'LOGOUT'});
+        daysDispatch({type: 'SET_DAYS', payload: null });
     }
 
     return {logout};

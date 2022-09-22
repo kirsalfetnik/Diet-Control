@@ -6,9 +6,13 @@ const {
     deleteDay,
     updateDay
 } = require('../controllers/dayController');
+const requireAuth = require('../middleware/requireAuth');
 
 
 const router = express.Router();
+
+// require auth for all day routes
+router.use(requireAuth);
 
 // GET all days
 router.get('/', getDays);

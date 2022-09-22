@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useDaysContext } from '../hooks/useDaysContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const DayForm = () => {
   const { dispatch } = useDaysContext();
+  const { user } = useAuthContext();
+
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [year, setYear] = useState('');
@@ -13,13 +16,19 @@ const DayForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!user) {
+      setError('You must be logged in');
+      return 
+    }
+
     const day = {name, date, year, comment}
     
     const response = await fetch('/days', {
       method: 'POST',
       body: JSON.stringify(day),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
       }
     });
     const json = await response.json();

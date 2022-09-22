@@ -18,6 +18,10 @@ const daySchema = new Schema({
     comment: {
         type: String,
         required: false
+    },
+    user_id: {
+        type: String,
+        required: true
     }
 }, { timestamps: true });
 

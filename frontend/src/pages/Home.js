@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDaysContext } from '../hooks/useDaysContext';
+import { useAuthContext } from "../hooks/useAuthContext";
 
 // components
 import DayDetails from '../components/DayDetails';
@@ -8,10 +9,15 @@ import DayForm from '../components/DayForm';
 const Home = () => {
     const {days, dispatch} = useDaysContext();
     const [query, setQuery] = useState('');
+    const {user} = useAuthContext();
 
     useEffect(() => {
         const fetchDays = async () => {
-            const response = await fetch('/days');
+            const response = await fetch('/days', {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            });
             const json = await response.json();
 
             if (response.ok) {
@@ -19,8 +25,10 @@ const Home = () => {
             }
         }
 
-        fetchDays();
-    }, [dispatch]);
+        if (user) {
+            fetchDays();
+        }
+    }, [dispatch, user]);
     
     return (
         <div>

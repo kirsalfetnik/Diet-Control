@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 
 // GET all days
 const getDays = async (req, res) => {
-    const days = await Day.find({}).sort({createdAt: -1});
+    const user_id = req.user._id
+    const days = await Day.find({ user_id }).sort({createdAt: -1});
     
     res.status(200).json(days);
 }
@@ -48,7 +49,8 @@ const createDay = async (req, res) => {
 
     // add a document to database
     try {
-        const day = await Day.create({name, date, year, comment});
+        const user_id = req.user._id;
+        const day = await Day.create({name, date, year, comment, user_id});
         res.status(200).json(day);
     } catch (error) {
         res.status(400).json({error: error.message});
